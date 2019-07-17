@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Alarm-App</title>
+    <script src="https://kit.fontawesome.com/270b36cde3.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+</head>
+<body>
+    <form>
+    <div id = "main" class="jumbotron">
+        <h1 class="display-4 text-primary">Alarm</h1>
+        <p class="text-danger lead">An easy and simple alarm app Just enter time in 24 hrs format</p>
+        <hr class="my-4">
+        <div class="row">
+            <p class="col-md-4">
+        <input type="time" class="form-control" max="23:59" min="00:00" autocomplete="off" id = "time" required height="1rem">
+           </p>
+         <p class="lead col-md-4">
+          <a class="btn btn-primary " href="#" type="submit" id="btn" role="button">Set Alarm <i class="far fa-bell"></i></a>
+         </p>
+         </div>
+      </div>
+      </form>
+</body>
+</html>
+
+<script>
+var socket = io.connect('http://localhost:4000');
+var alarmTime = document.getElementById("time");
+var btn = document.getElementById("btn");
+btn.onclick = ()=>{
+    console.log(alarmTime.value);
+    socket.emit("setalarm",{
+        time: alarmTime.value
+    });
+};
+socket.on("strike",function(data){
+var div = document.getElementById("main");
+div.innerHTML = "<center><img src = 'https://media.giphy.com/media/9PmfhA8rQzqGroYgYj/giphy.gif'><br ><h3 class='text-danger'>Alarm is ringing.......</h3></center>";
+});
+</script>
